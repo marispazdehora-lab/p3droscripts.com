@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+<title>P3DRO Scripts</title>
+
+<style>
+:root{
+    --bg:#09070f;
+    --card:#15111f;
+    --purple:#7c3aed;
+    --text:#ffffff;
+    --text2:#9ca3af;
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+}
+
+body{
+    background:var(--bg);
+    color:var(--text);
+    min-height:100vh;
+    overflow-x:hidden;
+}
+
+header{
+    display:flex;
+    justify-content:center;
+    padding:clamp(15px, 5vw, 25px);
+}
+
+.youtube-btn {
+    display:inline-block;
+    transition:all 0.3s ease;
+    cursor:pointer;
+}
+
+.youtube-btn svg {
+    width:clamp(50px, 10vw, 70px);
+    height:clamp(50px, 10vw, 70px);
+    transition:all 0.3s ease;
+}
+
+.youtube-btn:hover {
+    transform:scale(1.08);
+}
+
+.youtube-btn:hover svg {
+    filter:drop-shadow(0 0 15px rgba(124,58,237,.5));
+}
+
+.container{
+    width:min(1100px, 95%);
+    margin:0 auto;
+    padding:0 clamp(10px, 3vw, 20px);
+}
+
+.hero{
+    text-align:center;
+    margin-bottom:clamp(25px, 6vh, 35px);
+}
+
+.hero h1{
+    font-size:clamp(1.8rem, 6vw, 3rem);
+    word-break:break-word;
+}
+
+.hero p{
+    color:var(--text2);
+    font-size:clamp(0.9rem, 3vw, 1rem);
+}
+
+.search{
+    max-width:500px;
+    margin:clamp(20px, 4vh, 25px) auto;
+    padding:0 10px;
+}
+
+.search input{
+    width:100%;
+    padding:clamp(12px, 3vw, 14px);
+    border:none;
+    outline:none;
+    border-radius:12px;
+    background:var(--card);
+    color:white;
+    font-size:clamp(14px, 4vw, 16px);
+    -webkit-appearance:none;
+    appearance:none;
+}
+
+.counter{
+    text-align:center;
+    margin-bottom:clamp(20px, 4vh, 25px);
+    color:var(--text2);
+    font-size:clamp(0.85rem, 3vw, 1rem);
+}
+
+.scripts{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(min(100%, 280px), 1fr));
+    gap:clamp(15px, 3vw, 20px);
+    margin-bottom:clamp(30px, 6vh, 50px);
+    padding:0 5px;
+}
+
+.card{
+    background:var(--card);
+    border:1px solid rgba(124,58,237,.3);
+    border-radius:clamp(14px, 4vw, 16px);
+    padding:clamp(15px, 4vw, 20px);
+    cursor:pointer;
+    transition:all 0.25s ease;
+    -webkit-tap-highlight-color:transparent;
+}
+
+.card:active {
+    transform:scale(0.98);
+}
+
+.card h3{
+    margin-bottom:clamp(8px, 2vh, 10px);
+    font-size:clamp(1.1rem, 4vw, 1.25rem);
+    word-break:break-word;
+}
+
+.card p{
+    color:var(--text2);
+    font-size:clamp(0.8rem, 3vw, 0.9rem);
+}
+
+.modal{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.9);
+    justify-content:center;
+    align-items:center;
+    padding:clamp(15px, 4vw, 20px);
+    z-index:1000;
+    animation:fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity:0; }
+    to { opacity:1; }
+}
+
+.modal-content{
+    width:100%;
+    max-width:800px;
+    max-height:90vh;
+    background:var(--card);
+    border-radius:clamp(16px, 5vw, 18px);
+    padding:clamp(15px, 4vw, 20px);
+    animation:slideUp 0.3s ease;
+    overflow-y:auto;
+}
+
+@keyframes slideUp {
+    from {
+        transform:translateY(30px);
+        opacity:0;
+    }
+    to {
+        transform:translateY(0);
+        opacity:1;
+    }
+}
+
+.modal-content h2{
+    margin-bottom:clamp(12px, 3vh, 15px);
+    font-size:clamp(1.2rem, 5vw, 1.5rem);
+    word-break:break-word;
+    padding-right:10px;
+}
+
+textarea{
+    width:100%;
+    height:clamp(200px, 40vh, 250px);
+    border:none;
+    resize:vertical;
+    outline:none;
+    padding:clamp(12px, 3vw, 15px);
+    border-radius:12px;
+    background:#0d0a14;
+    color:white;
+    font-family:'Courier New', monospace;
+    font-size:clamp(12px, 3.5vw, 14px);
+    line-height:1.5;
+    -webkit-text-size-adjust:none;
+}
+
+.buttons{
+    display:flex;
+    gap:clamp(8px, 2vw, 10px);
+    margin-top:clamp(12px, 3vh, 15px);
+}
+
+button{
+    flex:1;
+    border:none;
+    padding:clamp(10px, 3vw, 12px);
+    border-radius:10px;
+    cursor:pointer;
+    font-weight:bold;
+    transition:all 0.2s ease;
+    font-size:clamp(0.85rem, 3.5vw, 1rem);
+    -webkit-tap-highlight-color:transparent;
+}
+
+button:active {
+    transform:scale(0.97);
+}
+
+.copy{
+    background:var(--purple);
+    color:white;
+}
+
+.copy:hover{
+    background:#6d28d9;
+}
+
+.close{
+    background:#2a2438;
+    color:white;
+}
+
+.close:hover{
+    background:#1f1a2e;
+}
+
+/* Estilos específicos para tablet */
+@media (min-width: 768px) and (max-width: 1024px) {
+    .scripts {
+        grid-template-columns:repeat(2, 1fr);
+        gap:20px;
+    }
+    
+    .container {
+        width:90%;
+    }
+    
+    .modal-content {
+        max-width:90%;
+    }
+}
+
+/* Estilos específicos para mobile */
+@media (max-width: 767px) {
+    .scripts {
+        grid-template-columns:1fr;
+        gap:15px;
+    }
+    
+    .buttons {
+        flex-direction:column;
+    }
+    
+    .container {
+        width:95%;
+    }
+    
+    .card {
+        padding:15px;
+    }
+    
+    .modal-content {
+        padding:15px;
+        max-height:85vh;
+    }
+    
+    textarea {
+        height:180px;
+    }
+}
+
+/* Para telas muito pequenas (celulares menores) */
+@media (max-width: 480px) {
+    .hero h1 {
+        font-size:1.5rem;
+    }
+    
+    .search input {
+        padding:12px;
+    }
+    
+    .card h3 {
+        font-size:1rem;
+    }
+    
+    .youtube-btn svg {
+        width:45px;
+        height:45px;
+    }
+}
+
+/* Landscape mode em mobile */
+@media (max-width: 767px) and (orientation: landscape) {
+    .modal-content {
+        max-height:80vh;
+    }
+    
+    textarea {
+        height:140px;
+    }
+    
+    .hero {
+        margin-bottom:15px;
+    }
+}
+
+/* Touch optimization para mobile */
+@media (hover: none) and (pointer: coarse) {
+    .card:hover {
+        transform:none;
+    }
+    
+    button:hover {
+        transform:none;
+    }
+    
+    .card:active {
+        transform:scale(0.98);
+    }
+    
+    button:active {
+        transform:scale(0.97);
+    }
+}
+
+/* Scrollbar personalizada (opcional) */
+::-webkit-scrollbar {
+    width:8px;
+    height:8px;
+}
+
+::-webkit-scrollbar-track {
+    background:var(--card);
+    border-radius:10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background:var(--purple);
+    border-radius:10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background:#6d28d9;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<a class="youtube-btn" href="https://www.youtube.com/@P3DRO_2014" target="_blank" rel="noopener noreferrer">
+<svg viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+<path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.376.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.376-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+</svg>
+</a>
+</header>
+
+<div class="container">
+
+<div class="hero">
+<h1>P3DRO Scripts</h1>
+<p>Hub de Scripts para Blox Fruits</p>
+</div>
+
+<div class="search">
+<input type="text" id="search" placeholder="🔍 Pesquisar hub...">
+</div>
+
+<div class="counter" id="counter">
+4 Hubs Disponíveis
+</div>
+
+<div class="scripts" id="scripts">
+
+<div class="card" data-name="Redz Hub" data-script='loadstring(game:HttpGet("https://raw.githubusercontent.com/newredz/BloxFruits/refs/heads/main/Source.luau"))(Settings)'>
+<h3>Redz Hub</h3>
+<p>📜 Clique para copiar o script</p>
+</div>
+
+<div class="card" data-name="Xero Hub" data-script='loadstring(game:HttpGet("https://raw.githubusercontent.com/Xero2409/XeroHub/refs/heads/main/main.lua"))()'>
+<h3>Xero Hub</h3>
+<p>📜 Clique para copiar o script</p>
+</div>
+
+<div class="card" data-name="Gravity Hub" data-script='loadstring(game:HttpGet("https://raw.githubusercontent.com/Dev-GravityHub/BloxFruit/refs/heads/main/Main.lua"))()'>
+<h3>Gravity Hub</h3>
+<p>📜 Clique para copiar o script</p>
+</div>
+
+<div class="card" data-name="Astral Hub" data-script='loadstring(game:HttpGet("https://rawscripts.net/raw/Blox-Fruits-ASTRAL-29222"))()'>
+<h3>Astral Hub</h3>
+<p>📜 Clique para copiar o script</p>
+</div>
+
+</div>
+
+</div>
+
+<div class="modal" id="modal">
+<div class="modal-content">
+<h2 id="title"></h2>
+<textarea id="content" readonly></textarea>
+<div class="buttons">
+<button class="copy" onclick="copyContent()">📋 Copiar Script</button>
+<button class="close" onclick="closeCard()">✖ Fechar</button>
+</div>
+</div>
+</div>
+
+<script>
+function openCard(title, script) {
+    document.getElementById("title").innerText = title;
+    document.getElementById("content").value = script;
+    document.getElementById("modal").style.display = "flex";
+    document.body.style.overflow = "hidden"; // Evita scroll do fundo
+}
+
+function closeCard() {
+    document.getElementById("modal").style.display = "none";
+    document.body.style.overflow = ""; // Restaura scroll
+}
+
+function copyContent() {
+    const content = document.getElementById("content").value;
+    navigator.clipboard.writeText(content).then(() => {
+        alert("✅ Script copiado com sucesso!");
+    }).catch(() => {
+        alert("❌ Erro ao copiar. Tente novamente.");
+    });
+}
+
+function updateCounter() {
+    const totalVisible = document.querySelectorAll('.card:not([style*="none"])').length;
+    const counter = document.getElementById("counter");
+    counter.innerText = `${totalVisible} Hub${totalVisible !== 1 ? 's' : ''} Disponível${totalVisible !== 1 ? 'is' : ''}`;
+}
+
+// Adicionar evento de clique para cada card
+document.querySelectorAll(".card").forEach(card => {
+    card.addEventListener("click", function(e) {
+        const name = this.getAttribute("data-name");
+        const script = this.getAttribute("data-script");
+        openCard(name, script);
+    });
+    
+    // Suporte para touch (mobile)
+    card.addEventListener("touchstart", function(e) {
+        // Apenas para feedback visual, sem conflito
+        this.style.transform = "scale(0.98)";
+    }, { passive: true });
+    
+    card.addEventListener("touchend", function(e) {
+        this.style.transform = "";
+    });
+});
+
+// Sistema de busca otimizado
+const searchInput = document.getElementById("search");
+let searchTimeout;
+
+searchInput.addEventListener("input", function() {
+    clearTimeout(searchTimeout);
+    
+    searchTimeout = setTimeout(() => {
+        let value = this.value.toLowerCase().trim();
+        
+        document.querySelectorAll(".card").forEach(card => {
+            const name = card.getAttribute("data-name").toLowerCase();
+            if (value === "" || name.includes(value)) {
+                card.style.display = "block";
+            } else {
+                card.style.display = "none";
+            }
+        });
+        
+        updateCounter();
+    }, 150); // Delay para melhor performance
+});
+
+// Fechar modal ao clicar fora
+document.getElementById("modal").addEventListener("click", function(e) {
+    if (e.target === this) {
+        closeCard();
+    }
+});
+
+// Fechar com tecla ESC
+document.addEventListener("keydown", function(e) {
+    if (e.key === "Escape" && document.getElementById("modal").style.display === "flex") {
+        closeCard();
+    }
+});
+
+// Inicializar contador
+updateCounter();
+
+// Ajustar viewport para mobile (corrigir altura em alguns navegadores)
+function setVH() {
+    let vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty('--vh', `${vh}px`);
+}
+
+window.addEventListener('resize', setVH);
+setVH();
+</script>
+
+</body>
+</html>
